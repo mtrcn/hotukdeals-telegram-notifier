@@ -1,0 +1,24 @@
+{
+  "name": "pull-hot-deals-electronics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chrome-aws-lambda": "^2.1.1",
+    "dotenv": "^8.2.0",
+    "puppeteer-core": "^3.0.4",
+    "slimbot": "^4.7.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.672.0",
+    "jest": "^26.0.1",
+    "jest-cli": "^26.0.1",
+    "jest-puppeteer": "^4.4.0",
+    "puppeteer": "^3.0.4"
+  }
+}

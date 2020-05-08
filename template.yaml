@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Pull newest deals from Hotukdeals and push to Telegram channel
+
+Resources:
+  HotUKDealsNewElectronicsDealsPuller:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: HotUKDealsNewElectronicsDealsPuller
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Timeout: 30
+      Role: arn:aws:iam::065627307699:role/KandilliEarthquakeBotRole
+      Environment:
+        Variables:
+            BUCKET_NAME: lambda-hot-deals
+            TELEGRAM_BOT_TOKEN: !Ref TelegramBotToken
+            TELEGRAM_CHANNEL_NAME: hotukdeals_newelectronicsdeals
+            HOTDEALSUK_URL: https://www.hotukdeals.com/tag/electronics-new
+      Events:
+        ScheduleRule:
+          Type: Schedule
+          Properties:
+              Schedule: rate(1 minute)
+              Name: ScheduleRule
+              Enabled: True
+
+Parameters:
+  TelegramBotToken:
+    Type: String
