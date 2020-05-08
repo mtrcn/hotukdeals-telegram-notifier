@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "set NODE_ENV=test&&jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chrome-aws-lambda": "^2.1.1",
-    "dotenv": "^8.2.0",
+    "isgd": "^1.1.3",
     "puppeteer-core": "^3.0.4",
     "slimbot": "^4.7.0"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "aws-sdk": "^2.672.0",
     "jest": "^26.0.1",
     "jest-cli": "^26.0.1",

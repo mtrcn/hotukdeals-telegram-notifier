@@ -2,26 +2,42 @@ const chromium = require('chrome-aws-lambda');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const Slimbot = require('slimbot');
+const isgd = require('isgd');
 
-require('dotenv').config();
+if (process.env.NODE_ENV == 'test')
+{
+  require('dotenv').config();
+}
 
 const slimbot = new Slimbot(process.env.TELEGRAM_BOT_TOKEN);
 
 exports.handler = async function (event, context) {
   const [bookmark, latestDeals] = await Promise.all([downloadBookmark(), getLatestDeals()]);
   console.log('last pulled url:' + bookmark);
+  
+  let newDeals = [];  
+
   for (const deal of latestDeals) {
     if (deal.url == bookmark)
       break;
+    
+    deal.shortUrl = await new Promise(r => isgd.shorten(deal.url, r));
 
-    await slimbot.sendMessage(`@${process.env.TELEGRAM_CHANNEL_NAME}`, `${deal.title}\n${deal.url}`, {disable_web_page_preview: true});
+    newDeals.push(deal);
+  }
+
+  for (const deal of newDeals.reverse()) {
+
+    await slimbot.sendMessage(`@${process.env.TELEGRAM_CHANNEL_NAME}`, `${deal.title} ${deal.shortUrl}`, {disable_web_page_preview: true});
 
     await new Promise(r => setTimeout(r, 1000)); //avoid Telegram API rate limits
   }
 
-  await uploadBookmark(latestDeals.shift().url);
-  console.log(`Successfully processed ${latestDeals.length} events.`);
-  return `Successfully processed ${latestDeals.length} events.`;
+  if (newDeals.length > 0)
+    await uploadBookmark(latestDeals.shift().url);
+  
+  console.log(`Successfully processed ${newDeals.length} events.`);
+  return `Successfully processed ${newDeals.length} events.`;
 }
 
 async function getLatestDeals() {
