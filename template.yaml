@@ -10,7 +10,8 @@ Resources:
       Handler: index.handler
       Runtime: nodejs12.x
       Timeout: 30
-      Role: arn:aws:iam::065627307699:role/KandilliEarthquakeBotRole
+      MemorySize: 512
+      Role: arn:aws:iam::065627307699:role/HotUkDealsPullerLambdaRole
       Environment:
         Variables:
             BUCKET_NAME: lambda-hot-deals

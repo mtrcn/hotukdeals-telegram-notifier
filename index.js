@@ -1,4 +1,3 @@
-const puppeteer = require('puppeteer-core');
 const chromium = require('chrome-aws-lambda');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
@@ -17,7 +16,7 @@ exports.handler = async function (event, context) {
 
     await slimbot.sendMessage(`@${process.env.TELEGRAM_CHANNEL_NAME}`, `${deal.title}\n${deal.url}`, {disable_web_page_preview: true});
 
-    await sleep(1000); //avoid Telegram API rate limits
+    await new Promise(r => setTimeout(r, 1000)); //avoid Telegram API rate limits
   }
 
   await uploadBookmark(latestDeals.shift().url);
@@ -26,7 +25,11 @@ exports.handler = async function (event, context) {
 }
 
 async function getLatestDeals() {
-  const browser = await chromium.puppeteer.launch();
+  const browser = await chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath
+  });
 
   const page = await browser.newPage();
   await page.goto(process.env.HOTDEALSUK_URL);
