@@ -9,7 +9,7 @@ Resources:
       FunctionName: HotUKDealsNewElectronicsDealsPuller
       Handler: index.handler
       Runtime: nodejs12.x
-      Timeout: 30
+      Timeout: 60
       MemorySize: 512
       Role: arn:aws:iam::065627307699:role/HotUkDealsPullerLambdaRole
       Environment:
