@@ -52,7 +52,7 @@ async function getLatestDeals() {
 
   const result = await page.evaluate(() => {
     const items = $('article > div > div.threadGrid-title.js-contextual-message-placeholder > strong > a').toArray()
-    return items.map(i => ({ title: item.text.trim(), url: item.href }));
+    return items.map(item => ({ title: item.text.trim(), url: item.href }));
   });
   await browser.close();
 
