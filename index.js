@@ -51,8 +51,15 @@ async function getLatestDeals() {
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
   const result = await page.evaluate(() => {
-    const items = $('article > div > div.threadGrid-title.js-contextual-message-placeholder > strong > a').toArray()
-    return items.map(item => ({ title: item.text.trim(), url: item.href }));
+    let result = [];
+    const items = $('article > div > div.threadGrid-title.js-contextual-message-placeholder > strong > a').toArray();
+    for (let item of items) {
+      result.push({
+        title: item.text.trim(),
+        url: item.href
+      });
+    }
+    return result;
   });
   await browser.close();
 
