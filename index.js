@@ -22,7 +22,6 @@ exports.handler = async function (event, context) {
       break;
     
     deal.shortUrl = await new Promise(r => isgd.shorten(deal.url, r));
-
     newDeals.push(deal);
   }
 
@@ -52,15 +51,8 @@ async function getLatestDeals() {
   await page.addScriptTag({ url: 'https://code.jquery.com/jquery-3.2.1.min.js' });
 
   const result = await page.evaluate(() => {
-    let result = [];
     const items = $('article > div > div.threadGrid-title.js-contextual-message-placeholder > strong > a').toArray()
-    for (let item of items) {
-      result.push({
-        title: item.text.trim(),
-        url: item.href
-      });
-    }
-    return result;
+    return items.map(i => ({ title: item.text.trim(), url: item.href }));
   });
   await browser.close();
 
