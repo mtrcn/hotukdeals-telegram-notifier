@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "aws-sdk": "^2.672.0",
+    "aws-sdk": "^2.814.0",
     "jest": "^26.0.1",
     "jest-cli": "^26.0.1",
     "jest-puppeteer": "^4.4.0",
